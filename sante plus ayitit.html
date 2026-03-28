@@ -1,0 +1,1380 @@
+<!doctype html>
+<html lang="en" class="h-full">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SantePlus Ayiti - Affordable Health Insurance</title>
+  <link rel="canonical" href="https://santeplusayiti.org">
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <script src="/_sdk/element_sdk.js"></script>
+  <script src="https://js.stripe.com/v3/"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&amp;display=swap" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: '#0066CC',
+            secondary: '#00A86B',
+            accent: '#E8F4FD',
+            dark: '#1A365D',
+            light: '#F0F9FF'
+          },
+          fontFamily: {
+            sans: ['Plus Jakarta Sans', 'sans-serif']
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    html, body {
+      height: 100%;
+      margin: 0;
+      padding: 0;
+    }
+    .app-wrapper {
+      min-height: 100%;
+      width: 100%;
+      overflow-x: hidden;
+    }
+    .page { display: none; }
+    .page.active { display: block; }
+    .nav-link { transition: all 0.3s ease; }
+    .nav-link:hover, .nav-link.active { color: #0066CC; }
+    .card-hover { transition: all 0.3s ease; }
+    .card-hover:hover { transform: translateY(-8px); box-shadow: 0 20px 40px rgba(0, 102, 204, 0.15); }
+    .btn-primary { background: linear-gradient(135deg, #0066CC 0%, #0052A3 100%); transition: all 0.3s ease; }
+    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 10px 30px rgba(0, 102, 204, 0.4); }
+    .btn-secondary { background: linear-gradient(135deg, #00A86B 0%, #008F5B 100%); transition: all 0.3s ease; }
+    .btn-secondary:hover { transform: translateY(-2px); box-shadow: 0 10px 30px rgba(0, 168, 107, 0.4); }
+    .whatsapp-btn { position: fixed; bottom: 24px; right: 24px; z-index: 1000; animation: pulse 2s infinite; }
+    @keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.05); } }
+    .gradient-bg { background: linear-gradient(135deg, #E8F4FD 0%, #F0FDF4 100%); }
+    .hero-pattern { background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%230066CC' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E"); }
+    .input-focus:focus { border-color: #0066CC; box-shadow: 0 0 0 3px rgba(0, 102, 204, 0.1); }
+    .mobile-menu { transform: translateX(-100%); transition: transform 0.3s ease; }
+    .mobile-menu.open { transform: translateX(0); }
+    .fade-in { animation: fadeIn 0.5s ease forwards; }
+    @media (max-width: 768px) {
+      .hero-pattern { padding-top: 20px !important; padding-bottom: 20px !important; }
+      .nav-link { font-size: 0.9rem; }
+      .card-hover { margin-left: auto; margin-right: auto; }
+      .plan-popular::before { font-size: 10px; top: -10px; }
+      .sante-footer { text-align: center; }
+    }
+    @media (max-width: 640px) {
+      .hero-pattern h1 { font-size: 1.75rem !important; }
+      .hero-pattern p { font-size: 0.95rem !important; }
+      .mobile-menu { width: 100% !important; }
+      .whatsapp-btn { bottom: 16px; right: 16px; }
+    }
+
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+    .testimonial-card { background: white; }
+    .plan-popular { position: relative; }
+    .plan-popular::before { content: 'Most Popular'; position: absolute; top: -12px; left: 50%; transform: translateX(-50%); background: linear-gradient(135deg, #00A86B 0%, #008F5B 100%); color: white; padding: 4px 16px; border-radius: 20px; font-size: 12px; font-weight: 600; }
+  </style>
+  <style>body { box-sizing: border-box; }</style>
+  <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
+ </head>
+ <body class="h-full font-sans text-gray-800 antialiased">
+  <div class="app-wrapper bg-white"><!-- Navigation -->
+   <nav class="fixed top-0 left-0 right-0 bg-white/95 backdrop-blur-md shadow-sm z-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+     <div class="flex justify-between items-center h-16 md:h-20"><!-- Logo -->
+      <div class="flex items-center gap-3 cursor-pointer" onclick="showPage('home')">
+       <img src="https://i.postimg.cc/cvq4sQyF/Whats-App-Image-2026-03-24-at-12-59-28-PM-(1).jpg" alt="SantéPlus Ayiti Logo" class="w-12 h-12 rounded-lg object-cover" loading="lazy" onerror="console.error('Logo failed to load:', this.src); this.style.background='linear-gradient(135deg, #0066CC 0%, #00A86B 100%)';"> <span class="text-lg font-bold text-dark">Santé<span class="text-primary">Plus</span> Ayiti</span>
+      </div><!-- Desktop Navigation -->
+      <div class="hidden md:flex items-center gap-8"><a onclick="showPage('home')" class="nav-link cursor-pointer font-medium text-gray-600" id="nav-home">Home</a> <a onclick="showPage('plans')" class="nav-link cursor-pointer font-medium text-gray-600" id="nav-plans">Plans</a> <a onclick="showPage('contact')" class="nav-link cursor-pointer font-medium text-gray-600" id="nav-contact">Contact</a> <a onclick="showPage('login')" class="nav-link cursor-pointer font-medium text-gray-600" id="nav-login">Login</a> <button onclick="showPage('register')" class="btn-primary text-white px-6 py-2.5 rounded-full font-semibold"> Get Insured </button>
+      </div><!-- Mobile Menu Button --> <button class="md:hidden p-2" onclick="toggleMobileMenu()"> <i data-lucide="menu" class="w-6 h-6 text-gray-700" id="menu-icon"></i> </button>
+     </div>
+    </div><!-- Mobile Menu -->
+    <div id="mobile-menu" class="mobile-menu fixed top-0 left-0 w-72 h-full bg-white shadow-2xl md:hidden">
+     <div class="p-6">
+      <div class="flex justify-between items-center mb-8">
+       <div class="flex items-center gap-2">
+        <div class="w-8 h-8 bg-gradient-to-br from-primary to-secondary rounded-lg flex items-center justify-center"><i data-lucide="heart-pulse" class="w-5 h-5 text-white"></i>
+        </div><span class="font-bold text-dark">SantéPlus</span>
+       </div><button onclick="toggleMobileMenu()"> <i data-lucide="x" class="w-6 h-6 text-gray-500"></i> </button>
+      </div>
+      <div class="flex flex-col gap-4"><a onclick="showPage('home'); toggleMobileMenu();" class="nav-link cursor-pointer font-medium text-gray-600 py-2">Home</a> <a onclick="showPage('plans'); toggleMobileMenu();" class="nav-link cursor-pointer font-medium text-gray-600 py-2">Plans</a> <a onclick="showPage('contact'); toggleMobileMenu();" class="nav-link cursor-pointer font-medium text-gray-600 py-2">Contact</a> <a onclick="showPage('login'); toggleMobileMenu();" class="nav-link cursor-pointer font-medium text-gray-600 py-2">Login</a> <button onclick="showPage('register'); toggleMobileMenu();" class="btn-primary text-white px-6 py-3 rounded-full font-semibold mt-4"> Get Insured </button>
+      </div>
+     </div>
+    </div>
+   </nav><!-- Overlay for mobile menu -->
+   <div id="menu-overlay" class="fixed inset-0 bg-black/50 z-40 hidden" onclick="toggleMobileMenu()"></div><!-- HOME PAGE -->
+   <div id="page-home" class="page active"><!-- Hero Section -->
+    <section class="hero-pattern gradient-bg pt-24 md:pt-32 pb-16 md:pb-24">
+     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid lg:grid-cols-2 gap-12 items-center">
+       <div class="fade-in">
+        <div class="inline-flex items-center gap-2 bg-white px-4 py-2 rounded-full shadow-sm mb-6"><span class="w-2 h-2 bg-secondary rounded-full animate-pulse"></span> <span class="text-sm font-medium text-gray-600">Trusted by 50,000+ Haitians</span>
+        </div>
+        <h1 id="hero-title" class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold text-dark leading-tight mb-6">Affordable Health Insurance for Everyone in Haiti</h1>
+        <p id="hero-subtitle" class="text-lg md:text-xl text-gray-600 mb-8 leading-relaxed">Protect your family with comprehensive health coverage. Access quality healthcare at partner hospitals across Haiti with plans starting at just 500 HTG/month.</p>
+        <div class="flex flex-col sm:flex-row gap-4"><button onclick="showPage('register')" class="btn-primary text-white px-8 py-4 rounded-full font-semibold text-lg flex items-center justify-center gap-2"> <i data-lucide="shield-check" class="w-5 h-5"></i> Get Insured Today </button> <button onclick="showPage('plans')" class="bg-white text-primary px-8 py-4 rounded-full font-semibold text-lg border-2 border-primary/20 hover:border-primary/40 transition-all flex items-center justify-center gap-2"> <i data-lucide="list" class="w-5 h-5"></i> View Plans </button>
+        </div>
+        <div class="flex items-center gap-6 mt-10">
+         <div class="flex -space-x-3">
+          <div class="w-10 h-10 rounded-full bg-primary/20 border-2 border-white flex items-center justify-center text-xs font-bold text-primary">
+           JM
+          </div>
+          <div class="w-10 h-10 rounded-full bg-secondary/20 border-2 border-white flex items-center justify-center text-xs font-bold text-secondary">
+           PL
+          </div>
+          <div class="w-10 h-10 rounded-full bg-amber-100 border-2 border-white flex items-center justify-center text-xs font-bold text-amber-600">
+           MR
+          </div>
+          <div class="w-10 h-10 rounded-full bg-rose-100 border-2 border-white flex items-center justify-center text-xs font-bold text-rose-600">
+           +
+          </div>
+         </div>
+         <div>
+          <div class="flex items-center gap-1"><i data-lucide="star" class="w-4 h-4 text-amber-400 fill-amber-400"></i> <i data-lucide="star" class="w-4 h-4 text-amber-400 fill-amber-400"></i> <i data-lucide="star" class="w-4 h-4 text-amber-400 fill-amber-400"></i> <i data-lucide="star" class="w-4 h-4 text-amber-400 fill-amber-400"></i> <i data-lucide="star" class="w-4 h-4 text-amber-400 fill-amber-400"></i>
+          </div>
+          <p class="text-sm text-gray-500">4.9/5 from 2,000+ reviews</p>
+         </div>
+        </div>
+       </div>
+       <div class="hidden lg:block relative">
+        <div class="absolute inset-0 bg-gradient-to-br from-primary/20 to-secondary/20 rounded-3xl transform rotate-6"></div>
+        <div class="relative bg-white rounded-3xl shadow-2xl p-8 overflow-hidden">
+         <img src="https://i.postimg.cc/C19y9F0v/Chat-GPT-Image-Mar-24-2026-04-00-57-AM.png" alt="Healthcare illustration" class="w-full h-auto object-cover rounded-2xl" loading="lazy" onerror="console.error('Image failed to load:', this.src); this.style.background='linear-gradient(135deg, #E8F4FD 0%, #F0FDF4 100%)'; this.alt='Healthcare illustration unavailable';">
+        </div>
+       </div>
+      </div>
+     </div>
+    </section><!-- Plans Preview Section -->
+    <section class="py-16 md:py-24 bg-white">
+     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center mb-12"><span class="inline-block bg-primary/10 text-primary px-4 py-1.5 rounded-full text-sm font-semibold mb-4">Our Plans</span>
+       <h2 class="text-3xl md:text-4xl font-bold text-dark mb-4">Choose Your Perfect Plan</h2>
+       <p class="text-gray-600 max-w-2xl mx-auto">Select from our carefully designed insurance plans that fit your needs and budget.</p>
+      </div>
+      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6"><!-- Basic Plan -->
+       <div class="card-hover bg-white rounded-2xl border border-gray-100 p-8 shadow-lg">
+        <div class="w-14 h-14 bg-blue-50 rounded-2xl flex items-center justify-center mb-6"><i data-lucide="shield" class="w-7 h-7 text-primary"></i>
+        </div>
+        <h3 class="text-2xl font-bold text-dark mb-2">Basic Plan</h3>
+        <p class="text-gray-500 mb-6">Essential coverage for individuals</p>
+        <div class="flex items-baseline gap-1 mb-6"><span class="text-4xl font-extrabold text-dark">500</span> <span class="text-gray-500">HTG/month</span>
+        </div>
+        <ul class="space-y-3 mb-8">
+         <li class="flex items-center gap-3"><i data-lucide="check-circle" class="w-5 h-5 text-secondary"></i> <span class="text-gray-600">General consultations</span></li>
+         <li class="flex items-center gap-3"><i data-lucide="check-circle" class="w-5 h-5 text-secondary"></i> <span class="text-gray-600">Emergency care</span></li>
+         <li class="flex items-center gap-3"><i data-lucide="check-circle" class="w-5 h-5 text-secondary"></i> <span class="text-gray-600">Basic medications</span></li>
+         <li class="flex items-center gap-3 opacity-40"><i data-lucide="x-circle" class="w-5 h-5 text-gray-400"></i> <span class="text-gray-400">Hospitalization</span></li>
+        </ul><button onclick="showPage('plans')" class="w-full py-3 rounded-full border-2 border-primary text-primary font-semibold hover:bg-primary hover:text-white transition-all"> Choose Basic </button>
+       </div><!-- Premium Plan -->
+       <div class="card-hover plan-popular bg-gradient-to-b from-primary to-blue-700 rounded-2xl p-8 shadow-xl text-white transform scale-105">
+        <div class="w-14 h-14 bg-white/20 rounded-2xl flex items-center justify-center mb-6"><i data-lucide="star" class="w-7 h-7 text-white"></i>
+        </div>
+        <h3 class="text-2xl font-bold mb-2">Premium Plan</h3>
+        <p class="text-blue-100 mb-6">Complete coverage for families</p>
+        <div class="flex items-baseline gap-1 mb-6"><span class="text-4xl font-extrabold">1,500</span> <span class="text-blue-200">HTG/month</span>
+        </div>
+        <ul class="space-y-3 mb-8">
+         <li class="flex items-center gap-3"><i data-lucide="check-circle" class="w-5 h-5 text-secondary"></i> <span>All Basic benefits</span></li>
+         <li class="flex items-center gap-3"><i data-lucide="check-circle" class="w-5 h-5 text-secondary"></i> <span>Hospitalization coverage</span></li>
+         <li class="flex items-center gap-3"><i data-lucide="check-circle" class="w-5 h-5 text-secondary"></i> <span>Specialist consultations</span></li>
+         <li class="flex items-center gap-3"><i data-lucide="check-circle" class="w-5 h-5 text-secondary"></i> <span>Lab tests included</span></li>
+        </ul><button onclick="showPage('register')" class="w-full py-3 rounded-full bg-white text-primary font-semibold hover:bg-blue-50 transition-all"> Choose Premium </button>
+       </div><!-- Elite Plan -->
+       <div class="card-hover bg-white rounded-2xl border border-gray-100 p-8 shadow-lg">
+        <div class="w-14 h-14 bg-amber-50 rounded-2xl flex items-center justify-center mb-6"><i data-lucide="crown" class="w-7 h-7 text-amber-500"></i>
+        </div>
+        <h3 class="text-2xl font-bold text-dark mb-2">Elite Plan</h3>
+        <p class="text-gray-500 mb-6">Premium coverage with VIP benefits</p>
+        <div class="flex items-baseline gap-1 mb-6"><span class="text-4xl font-extrabold text-dark">3,000</span> <span class="text-gray-500">HTG/month</span>
+        </div>
+        <ul class="space-y-3 mb-8">
+         <li class="flex items-center gap-3"><i data-lucide="check-circle" class="w-5 h-5 text-secondary"></i> <span class="text-gray-600">All Premium benefits</span></li>
+         <li class="flex items-center gap-3"><i data-lucide="check-circle" class="w-5 h-5 text-secondary"></i> <span class="text-gray-600">International coverage</span></li>
+         <li class="flex items-center gap-3"><i data-lucide="check-circle" class="w-5 h-5 text-secondary"></i> <span class="text-gray-600">Dental &amp; vision</span></li>
+         <li class="flex items-center gap-3"><i data-lucide="check-circle" class="w-5 h-5 text-secondary"></i> <span class="text-gray-600">24/7 concierge service</span></li>
+        </ul><button onclick="showPage('plans')" class="w-full py-3 rounded-full border-2 border-amber-500 text-amber-600 font-semibold hover:bg-amber-500 hover:text-white transition-all"> Choose Elite </button>
+       </div>
+      </div>
+     </div>
+    </section><!-- Benefits Section -->
+    <section class="py-16 md:py-24 gradient-bg">
+     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center mb-12"><span class="inline-block bg-secondary/10 text-secondary px-4 py-1.5 rounded-full text-sm font-semibold mb-4">Why Choose Us</span>
+       <h2 class="text-3xl md:text-4xl font-bold text-dark mb-4">Benefits That Matter</h2>
+       <p class="text-gray-600 max-w-2xl mx-auto">We're committed to providing the best healthcare coverage in Haiti.</p>
+      </div>
+      <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+       <div class="bg-white rounded-2xl p-6 shadow-lg card-hover">
+        <div class="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center mb-4"><i data-lucide="zap" class="w-6 h-6 text-primary"></i>
+        </div>
+        <h3 class="text-lg font-bold text-dark mb-2">Fast Coverage</h3>
+        <p class="text-gray-500 text-sm">Get covered within 24 hours of registration. No waiting periods.</p>
+       </div>
+       <div class="bg-white rounded-2xl p-6 shadow-lg card-hover">
+        <div class="w-12 h-12 bg-secondary/10 rounded-xl flex items-center justify-center mb-4"><i data-lucide="wallet" class="w-6 h-6 text-secondary"></i>
+        </div>
+        <h3 class="text-lg font-bold text-dark mb-2">Affordable Prices</h3>
+        <p class="text-gray-500 text-sm">Plans starting at 500 HTG/month. Quality care doesn't have to be expensive.</p>
+       </div>
+       <div class="bg-white rounded-2xl p-6 shadow-lg card-hover">
+        <div class="w-12 h-12 bg-rose-100 rounded-xl flex items-center justify-center mb-4"><i data-lucide="hospital" class="w-6 h-6 text-rose-500"></i>
+        </div>
+        <h3 class="text-lg font-bold text-dark mb-2">Partner Hospitals</h3>
+        <p class="text-gray-500 text-sm">Access to 50+ partner hospitals and clinics across Haiti.</p>
+       </div>
+       <div class="bg-white rounded-2xl p-6 shadow-lg card-hover">
+        <div class="w-12 h-12 bg-amber-100 rounded-xl flex items-center justify-center mb-4"><i data-lucide="headphones" class="w-6 h-6 text-amber-600"></i>
+        </div>
+        <h3 class="text-lg font-bold text-dark mb-2">24/7 Support</h3>
+        <p class="text-gray-500 text-sm">Our support team is available around the clock to assist you.</p>
+       </div>
+      </div>
+     </div>
+    </section><!-- CTA Section -->
+    <section class="py-16 md:py-24 bg-gradient-to-r from-primary to-blue-700">
+     <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      <h2 class="text-3xl md:text-4xl font-bold text-white mb-6">Ready to Protect Your Family?</h2>
+      <p class="text-blue-100 text-lg mb-8 max-w-2xl mx-auto">Join over 50,000 Haitians who trust SantePlus Ayiti for their healthcare needs. Get covered today!</p>
+      <div class="flex flex-col sm:flex-row gap-4 justify-center"><button onclick="showPage('register')" class="bg-white text-primary px-8 py-4 rounded-full font-semibold text-lg hover:bg-blue-50 transition-all flex items-center justify-center gap-2"> <i data-lucide="user-plus" class="w-5 h-5"></i> Join Now </button> <button onclick="openWhatsApp()" class="bg-green-500 text-white px-8 py-4 rounded-full font-semibold text-lg hover:bg-green-600 transition-all flex items-center justify-center gap-2">
+        <svg class="w-5 h-5" viewbox="0 0 24 24" fill="currentColor">
+         <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
+        </svg> Chat on WhatsApp </button>
+      </div>
+     </div>
+    </section>
+   </div><!-- PLANS PAGE -->
+   <div id="page-plans" class="page">
+    <section class="pt-24 md:pt-32 pb-16 gradient-bg">
+     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center mb-12"><span class="inline-block bg-primary/10 text-primary px-4 py-1.5 rounded-full text-sm font-semibold mb-4">Insurance Plans</span>
+       <h1 class="text-3xl md:text-5xl font-bold text-dark mb-4">Choose Your Coverage</h1>
+       <p class="text-gray-600 max-w-2xl mx-auto text-lg">Compare our plans and find the perfect fit for you and your family.</p>
+      </div>
+     </div>
+    </section>
+    <section class="py-16 bg-white">
+     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="overflow-x-auto mb-20">
+       <table class="w-full min-w-0 sm:min-w-[800px]">
+        <thead>
+         <tr>
+          <th class="text-left p-4 bg-gray-50 rounded-tl-xl"></th>
+          <th class="text-center p-6 bg-gray-50">
+           <div class="space-y-2"><i data-lucide="shield" class="w-8 h-8 mx-auto text-primary"></i>
+            <h3 class="text-xl font-bold text-dark">Basic Plan</h3>
+            <p class="text-3xl font-extrabold text-primary">500 <span class="text-base font-normal text-gray-500">HTG/mo</span></p>
+           </div></th>
+          <th class="text-center p-6 bg-primary/10 relative">
+           <div class="absolute -top-3 left-1/2 -translate-x-1/2 bg-secondary text-white text-xs px-3 py-1 rounded-full font-semibold">
+            POPULAR
+           </div>
+           <div class="space-y-2"><i data-lucide="star" class="w-8 h-8 mx-auto text-primary"></i>
+            <h3 class="text-xl font-bold text-dark">Premium Plan</h3>
+            <p class="text-3xl font-extrabold text-primary">1,500 <span class="text-base font-normal text-gray-500">HTG/mo</span></p>
+           </div></th>
+          <th class="text-center p-6 bg-gray-50 rounded-tr-xl">
+           <div class="space-y-2"><i data-lucide="crown" class="w-8 h-8 mx-auto text-amber-500"></i>
+            <h3 class="text-xl font-bold text-dark">Elite Plan</h3>
+            <p class="text-3xl font-extrabold text-amber-500">3,000 <span class="text-base font-normal text-gray-500">HTG/mo</span></p>
+           </div></th>
+         </tr>
+        </thead>
+        <tbody class="divide-y divide-gray-100">
+         <tr>
+          <td class="p-4 font-medium text-gray-700 bg-gray-50">General Consultations</td>
+          <td class="p-4 text-center"><i data-lucide="check" class="w-6 h-6 mx-auto text-secondary"></i></td>
+          <td class="p-4 text-center bg-primary/5"><i data-lucide="check" class="w-6 h-6 mx-auto text-secondary"></i></td>
+          <td class="p-4 text-center"><i data-lucide="check" class="w-6 h-6 mx-auto text-secondary"></i></td>
+         </tr>
+         <tr>
+          <td class="p-4 font-medium text-gray-700 bg-gray-50">Emergency Care</td>
+          <td class="p-4 text-center"><i data-lucide="check" class="w-6 h-6 mx-auto text-secondary"></i></td>
+          <td class="p-4 text-center bg-primary/5"><i data-lucide="check" class="w-6 h-6 mx-auto text-secondary"></i></td>
+          <td class="p-4 text-center"><i data-lucide="check" class="w-6 h-6 mx-auto text-secondary"></i></td>
+         </tr>
+         <tr>
+          <td class="p-4 font-medium text-gray-700 bg-gray-50">Hospitalization</td>
+          <td class="p-4 text-center"><i data-lucide="x" class="w-6 h-6 mx-auto text-gray-300"></i></td>
+          <td class="p-4 text-center bg-primary/5"><i data-lucide="check" class="w-6 h-6 mx-auto text-secondary"></i></td>
+          <td class="p-4 text-center"><i data-lucide="check" class="w-6 h-6 mx-auto text-secondary"></i></td>
+         </tr>
+         <tr>
+          <td class="p-4 font-medium text-gray-700 bg-gray-50">Specialists</td>
+          <td class="p-4 text-center"><i data-lucide="x" class="w-6 h-6 mx-auto text-gray-300"></i></td>
+          <td class="p-4 text-center bg-primary/5"><i data-lucide="check" class="w-6 h-6 mx-auto text-secondary"></i></td>
+          <td class="p-4 text-center"><i data-lucide="check" class="w-6 h-6 mx-auto text-secondary"></i></td>
+         </tr>
+         <tr>
+          <td class="p-4 font-medium text-gray-700 bg-gray-50">International Coverage</td>
+          <td class="p-4 text-center"><i data-lucide="x" class="w-6 h-6 mx-auto text-gray-300"></i></td>
+          <td class="p-4 text-center bg-primary/5"><i data-lucide="x" class="w-6 h-6 mx-auto text-gray-300"></i></td>
+          <td class="p-4 text-center"><i data-lucide="check" class="w-6 h-6 mx-auto text-secondary"></i></td>
+         </tr>
+         <tr>
+          <td class="p-4 bg-gray-50 rounded-bl-xl"></td>
+          <td class="p-4 text-center"><button onclick="selectPlan('basic')" class="btn-primary text-white px-8 py-3 rounded-full font-semibold">Choose</button></td>
+          <td class="p-4 text-center bg-primary/5"><button onclick="selectPlan('premium')" class="btn-secondary text-white px-8 py-3 rounded-full font-semibold">Choose</button></td>
+          <td class="p-4 text-center rounded-br-xl"><button onclick="selectPlan('elite')" class="bg-amber-500 hover:bg-amber-600 text-white px-8 py-3 rounded-full font-semibold transition-all">Choose</button></td>
+         </tr>
+        </tbody>
+       </table>
+      </div>
+     </div>
+    </section>
+   </div><!-- LOGIN PAGE -->
+   <div id="page-login" class="page">
+    <section class="min-h-screen pt-20 flex items-center gradient-bg">
+     <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12 w-full">
+      <div class="text-center mb-10">
+       <h1 class="text-3xl md:text-4xl font-bold text-dark mb-4">Welcome Back</h1>
+       <p class="text-gray-600">Choose your account type to continue</p>
+      </div>
+      <div class="grid md:grid-cols-3 gap-6 mb-10"><!-- Patient Login Card -->
+       <div class="login-card cursor-pointer bg-white rounded-2xl p-6 shadow-lg border-2 border-transparent hover:border-primary transition-all" onclick="selectLoginType('patient')" id="login-patient">
+        <div class="text-center">
+         <div class="w-16 h-16 bg-primary/10 rounded-2xl flex items-center justify-center mx-auto mb-4"><i data-lucide="user" class="w-8 h-8 text-primary"></i>
+         </div>
+         <h3 class="text-xl font-bold text-dark mb-2">Patient Login</h3>
+         <p class="text-gray-500 text-sm">Access your health records and coverage</p>
+        </div>
+       </div><!-- Doctor Login Card -->
+       <div class="login-card cursor-pointer bg-white rounded-2xl p-6 shadow-lg border-2 border-transparent hover:border-secondary transition-all" onclick="selectLoginType('doctor')" id="login-doctor">
+        <div class="text-center">
+         <div class="w-16 h-16 bg-secondary/10 rounded-2xl flex items-center justify-center mx-auto mb-4"><i data-lucide="stethoscope" class="w-8 h-8 text-secondary"></i>
+         </div>
+         <h3 class="text-xl font-bold text-dark mb-2">Doctor Login</h3>
+         <p class="text-gray-500 text-sm">Manage appointments and records</p>
+        </div>
+       </div><!-- Hospital Login Card -->
+       <div class="login-card cursor-pointer bg-white rounded-2xl p-6 shadow-lg border-2 border-transparent hover:border-amber-500 transition-all" onclick="selectLoginType('hospital')" id="login-hospital">
+        <div class="text-center">
+         <div class="w-16 h-16 bg-amber-100 rounded-2xl flex items-center justify-center mx-auto mb-4"><i data-lucide="building-2" class="w-8 h-8 text-amber-600"></i>
+         </div>
+         <h3 class="text-xl font-bold text-dark mb-2">Hospital Login</h3>
+         <p class="text-gray-500 text-sm">Access billing and claims</p>
+        </div>
+       </div>
+      </div><!-- Login Form -->
+      <div class="max-w-md mx-auto bg-white rounded-2xl shadow-xl p-8" id="login-form-container">
+       <div class="text-center mb-6">
+        <div id="login-type-icon" class="w-14 h-14 bg-primary/10 rounded-xl flex items-center justify-center mx-auto mb-3"><i data-lucide="user" class="w-7 h-7 text-primary"></i>
+        </div>
+        <h2 class="text-xl font-bold text-dark" id="login-type-title">Patient Login</h2>
+       </div>
+       <form id="login-form" onsubmit="handleLogin(event)">
+        <div class="space-y-4">
+         <div><label class="block text-sm font-medium text-gray-700 mb-1">Email Address</label>
+          <div class="relative"><i data-lucide="mail" class="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400"></i> <input type="email" required class="input-focus w-full pl-10 pr-4 py-3 border border-gray-200 rounded-xl focus:outline-none" placeholder="Enter your email">
+          </div>
+         </div>
+         <div><label class="block text-sm font-medium text-gray-700 mb-1">Password</label>
+          <div class="relative"><i data-lucide="lock" class="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400"></i> <input type="password" required class="input-focus w-full pl-10 pr-4 py-3 border border-gray-200 rounded-xl focus:outline-none" placeholder="Enter your password" id="login-password"> <button type="button" onclick="togglePassword('login-password')" class="absolute right-3 top-1/2 -translate-y-1/2"> <i data-lucide="eye" class="w-5 h-5 text-gray-400"></i> </button>
+          </div>
+         </div>
+         <div class="flex items-center justify-between"><label class="flex items-center gap-2 cursor-pointer"> <input type="checkbox" class="w-4 h-4 text-primary rounded border-gray-300"> <span class="text-sm text-gray-600">Remember me</span> </label> <a href="#" class="text-sm text-primary hover:underline" onclick="showForgotPassword(event)">Forgot password?</a>
+         </div><button type="submit" class="btn-primary w-full text-white py-3 rounded-xl font-semibold"> Sign In </button>
+        </div>
+       </form>
+       <div class="mt-6 text-center">
+        <p class="text-gray-600">Don't have an account? <a onclick="showPage('register')" class="text-primary font-semibold cursor-pointer hover:underline">Register now</a></p>
+       </div>
+      </div>
+     </div>
+    </section>
+   </div><!-- PAYMENT PAGE -->
+   <div id="page-payment" class="page">
+    <section class="min-h-screen pt-20 pb-12 gradient-bg">
+     <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <div class="mb-8"><button onclick="showPage('plans')" class="flex items-center gap-2 text-primary hover:text-blue-700 font-semibold mb-4"> <i data-lucide="arrow-left" class="w-5 h-5"></i> Back to Plans </button>
+       <h1 class="text-3xl md:text-4xl font-bold text-dark mb-2">Secure Payment</h1>
+       <p class="text-gray-600">Complete your insurance registration with a secure payment</p>
+      </div>
+      <div class="grid lg:grid-cols-3 gap-8"><!-- Payment Form -->
+       <div class="lg:col-span-2">
+        <div class="bg-white rounded-2xl shadow-xl p-8"><!-- Step Indicator -->
+         <div class="flex justify-between mb-8">
+          <div class="flex items-center gap-3">
+           <div class="w-8 h-8 bg-primary text-white rounded-full flex items-center justify-center font-bold text-sm">
+            1
+           </div><span class="font-semibold text-dark">Plan</span>
+          </div>
+          <div class="flex-1 h-0.5 bg-gray-200 mx-4 mt-4"></div>
+          <div class="flex items-center gap-3">
+           <div class="w-8 h-8 bg-primary text-white rounded-full flex items-center justify-center font-bold text-sm">
+            2
+           </div><span class="font-semibold text-dark">Payment</span>
+          </div>
+          <div class="flex-1 h-0.5 bg-gray-200 mx-4 mt-4"></div>
+          <div class="flex items-center gap-3">
+           <div class="w-8 h-8 bg-gray-300 text-gray-600 rounded-full flex items-center justify-center font-bold text-sm">
+            3
+           </div><span class="font-semibold text-gray-600">Confirm</span>
+          </div>
+         </div><!-- Payment Method Tabs -->
+         <div class="mb-8"><label class="block text-sm font-bold text-dark mb-4">Select Payment Method</label>
+          <div class="grid grid-cols-2 md:grid-cols-3 gap-3 mb-6"><button onclick="selectPaymentMethod('card')" class="payment-method-btn active p-3 rounded-xl border-2 border-primary bg-primary/5 text-center font-semibold text-dark transition-all" data-method="card"> <i data-lucide="credit-card" class="w-5 h-5 mx-auto mb-1 text-primary"></i> Card </button> <button onclick="selectPaymentMethod('paypal')" class="payment-method-btn p-3 rounded-xl border-2 border-gray-200 text-center font-semibold text-dark hover:border-gray-300 transition-all" data-method="paypal"> <i data-lucide="globe" class="w-5 h-5 mx-auto mb-1 text-gray-500"></i> PayPal </button> <button onclick="selectPaymentMethod('moncash')" class="payment-method-btn p-3 rounded-xl border-2 border-gray-200 text-center font-semibold text-dark hover:border-gray-300 transition-all" data-method="moncash"> <i data-lucide="smartphone" class="w-5 h-5 mx-auto mb-1 text-gray-500"></i> MonCash </button> <button onclick="selectPaymentMethod('bank')" class="payment-method-btn p-3 rounded-xl border-2 border-gray-200 text-center font-semibold text-dark hover:border-gray-300 transition-all" data-method="bank"> <i data-lucide="building-2" class="w-5 h-5 mx-auto mb-1 text-gray-500"></i> Bank </button> <button onclick="selectPaymentMethod('swift')" class="payment-method-btn p-3 rounded-xl border-2 border-gray-200 text-center font-semibold text-dark hover:border-gray-300 transition-all" data-method="swift"> <i data-lucide="send" class="w-5 h-5 mx-auto mb-1 text-gray-500"></i> SWIFT </button> <button onclick="selectPaymentMethod('tchot')" class="payment-method-btn p-3 rounded-xl border-2 border-gray-200 text-center font-semibold text-dark hover:border-gray-300 transition-all" data-method="tchot"> <i data-lucide="phone" class="w-5 h-5 mx-auto mb-1 text-gray-500"></i> TchoTcho </button>
+          </div>
+         </div><!-- Card Payment Form -->
+         <form id="payment-form" onsubmit="processPayment(event)" class="space-y-6">
+          <div id="card-section" class="payment-section">
+           <div class="mb-4 p-4 bg-blue-50 border border-blue-200 rounded-lg flex items-start gap-3"><i data-lucide="shield-check" class="w-5 h-5 text-blue-600 mt-0.5"></i>
+            <div class="text-sm">
+             <p class="font-semibold text-blue-900">PCI DSS Secure</p>
+             <p class="text-blue-700 text-xs">Your card information is encrypted and secure</p>
+            </div>
+           </div>
+           <div class="space-y-4">
+            <div><label class="block text-sm font-medium text-gray-700 mb-1">Cardholder Name</label>
+             <div class="relative"><i data-lucide="user" class="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400"></i> <input type="text" id="cardholder-name" class="input-focus w-full pl-10 pr-4 py-3 border border-gray-200 rounded-xl focus:outline-none" placeholder="John Doe">
+             </div>
+            </div><!-- Stripe Card Element -->
+            <div><label class="block text-sm font-medium text-gray-700 mb-1">Card Details</label>
+             <div id="stripe-card-element" class="input-focus border border-gray-200 rounded-xl p-3 bg-white"></div>
+             <div id="stripe-card-errors" class="text-red-500 text-sm mt-2 hidden"></div>
+            </div>
+            <div><label class="flex items-center gap-2 cursor-pointer"> <input type="checkbox" id="save-card-checkbox" class="w-4 h-4 text-primary rounded"> <span class="text-sm text-gray-600">Save this card for future payments</span> </label>
+            </div>
+           </div>
+          </div><!-- MonCash Payment -->
+          <div id="moncash-section" class="payment-section hidden">
+           <div class="p-4 bg-green-50 border border-green-200 rounded-lg">
+            <p class="text-sm text-gray-700"><strong>Mobile Money (Haiti):</strong> This feature requires backend integration. Please contact support to enable MonCash, TchoTcho, or other payment methods.</p>
+           </div>
+           <div class="mt-4"><label class="block text-sm font-medium text-gray-700 mb-1">Phone Number (Haiti)</label>
+            <div class="relative"><i data-lucide="phone" class="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400"></i> <input type="tel" placeholder="+509 XXXX XXXX" class="input-focus w-full pl-10 pr-4 py-3 border border-gray-200 rounded-xl focus:outline-none" disabled>
+            </div>
+           </div>
+          </div><!-- PayPal Payment -->
+          <div id="paypal-section" class="payment-section hidden">
+           <div class="p-4 bg-blue-50 border border-blue-200 rounded-lg text-center">
+            <p class="text-sm text-gray-700">PayPal integration requires backend setup. Please contact support to enable international payments.</p>
+           </div>
+          </div><!-- Bank Transfer -->
+          <div id="bank-section" class="payment-section hidden">
+           <div class="space-y-4">
+            <div class="p-4 bg-amber-50 border border-amber-200 rounded-lg">
+             <p class="text-sm text-gray-700"><strong>Bank Transfer (Haiti):</strong> This feature requires backend setup. Contact support for banking details.</p>
+            </div>
+           </div>
+          </div><!-- SWIFT Transfer -->
+          <div id="swift-section" class="payment-section hidden">
+           <div class="space-y-4">
+            <div class="p-4 bg-purple-50 border border-purple-200 rounded-lg">
+             <p class="text-sm text-gray-700"><strong>International SWIFT Transfer:</strong> This feature requires backend setup. Contact support for international banking details.</p>
+            </div>
+           </div>
+          </div><!-- TchoTcho Payment -->
+          <div id="tchot-section" class="payment-section hidden">
+           <div class="p-4 bg-orange-50 border border-orange-200 rounded-lg">
+            <p class="text-sm text-gray-700"><strong>TchoTcho Mobile Money (Haiti):</strong> This feature requires backend integration. Please contact support.</p>
+           </div>
+           <div class="mt-4"><label class="block text-sm font-medium text-gray-700 mb-1">Phone Number (Haiti)</label>
+            <div class="relative"><i data-lucide="phone" class="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400"></i> <input type="tel" placeholder="+509 XXXX XXXX" class="input-focus w-full pl-10 pr-4 py-3 border border-gray-200 rounded-xl focus:outline-none" disabled>
+            </div>
+           </div>
+          </div><button type="submit" class="btn-primary w-full text-white py-4 rounded-xl font-semibold text-lg flex items-center justify-center gap-2"> <i data-lucide="lock" class="w-5 h-5"></i> Pay Now </button>
+         </form>
+         <p class="text-xs text-gray-500 text-center mt-6">Your payment is encrypted and processed securely. SantéPlus Ayiti is PCI DSS compliant.</p>
+        </div><!-- Order Summary -->
+        <div class="lg:col-span-1">
+         <div class="bg-white rounded-2xl shadow-xl p-6 sticky top-24">
+          <h3 class="text-lg font-bold text-dark mb-6">Order Summary</h3>
+          <div id="plan-summary" class="mb-6 p-4 bg-gray-50 rounded-xl">
+           <div class="flex justify-between items-start mb-2">
+            <div>
+             <p class="text-sm font-medium text-gray-600">Plan</p>
+             <p id="summary-plan-name" class="text-lg font-bold text-dark">Premium Plan</p>
+            </div>
+            <p id="summary-plan-price" class="text-lg font-bold text-primary">1,500 HTG</p>
+           </div>
+           <p class="text-xs text-gray-500 mt-3">Duration: 1 Month</p>
+          </div>
+          <div class="space-y-3 mb-6 pb-6 border-b border-gray-200">
+           <div class="flex justify-between text-sm"><span class="text-gray-600">Subtotal</span> <span id="subtotal" class="font-medium text-dark">1,500 HTG</span>
+           </div>
+           <div class="flex justify-between text-sm"><span class="text-gray-600">Tax (10%)</span> <span id="tax" class="font-medium text-dark">150 HTG</span>
+           </div>
+           <div class="flex justify-between text-sm"><span class="text-gray-600">Processing Fee</span> <span id="fee" class="font-medium text-dark">50 HTG</span>
+           </div>
+          </div>
+          <div class="flex justify-between items-center mb-6"><span class="font-bold text-dark">Total</span> <span id="total-amount" class="text-2xl font-bold text-primary">1,700 HTG</span>
+          </div>
+          <div id="plan-details" class="space-y-3 text-sm">
+           <div class="flex items-start gap-3"><i data-lucide="check-circle" class="w-5 h-5 text-secondary flex-shrink-0 mt-0.5"></i> <span class="text-gray-600">Coverage starts immediately</span>
+           </div>
+           <div class="flex items-start gap-3"><i data-lucide="check-circle" class="w-5 h-5 text-secondary flex-shrink-0 mt-0.5"></i> <span class="text-gray-600">Access 50+ partner hospitals</span>
+           </div>
+           <div class="flex items-start gap-3"><i data-lucide="check-circle" class="w-5 h-5 text-secondary flex-shrink-0 mt-0.5"></i> <span class="text-gray-600">24/7 customer support</span>
+           </div>
+           <div class="flex items-start gap-3"><i data-lucide="check-circle" class="w-5 h-5 text-secondary flex-shrink-0 mt-0.5"></i> <span class="text-gray-600">Cancel anytime</span>
+           </div>
+          </div><button onclick="downloadInvoice()" class="w-full mt-6 py-3 border-2 border-primary text-primary rounded-xl font-semibold hover:bg-primary/5 transition-all flex items-center justify-center gap-2"> <i data-lucide="download" class="w-5 h-5"></i> Download Invoice </button>
+         </div>
+        </div>
+       </div>
+      </div>
+     </div>
+    </section>
+   </div><!-- REGISTER PAGE -->
+   <div id="page-register" class="page">
+    <section class="min-h-screen pt-20 pb-12 gradient-bg">
+     <div class="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <div class="text-center mb-8">
+       <h1 class="text-3xl md:text-4xl font-bold text-dark mb-4">Create Your Account</h1>
+       <p class="text-gray-600">Join SantePlus Ayiti and get covered today</p>
+      </div>
+      <div class="bg-white rounded-2xl shadow-xl p-8">
+       <form id="register-form" onsubmit="handleRegister(event)">
+        <div class="grid md:grid-cols-2 gap-6">
+         <div class="md:col-span-2"><label class="block text-sm font-medium text-gray-700 mb-1">Full Name</label>
+          <div class="relative"><i data-lucide="user" class="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400"></i> <input type="text" required class="input-focus w-full pl-10 pr-4 py-3 border border-gray-200 rounded-xl focus:outline-none" placeholder="Enter your full name">
+          </div>
+         </div>
+         <div><label class="block text-sm font-medium text-gray-700 mb-1">Date of Birth</label>
+          <div class="relative"><i data-lucide="calendar" class="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400"></i> <input type="date" required class="input-focus w-full pl-10 pr-4 py-3 border border-gray-200 rounded-xl focus:outline-none">
+          </div>
+         </div>
+         <div><label class="block text-sm font-medium text-gray-700 mb-1">Gender</label>
+          <div class="relative"><i data-lucide="users" class="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400"></i> <select required class="input-focus w-full pl-10 pr-4 py-3 border border-gray-200 rounded-xl focus:outline-none appearance-none bg-white"> <option value="">Select gender</option> <option value="male">Male</option> <option value="female">Female</option> <option value="other">Other</option> </select>
+          </div>
+         </div>
+         <div><label class="block text-sm font-medium text-gray-700 mb-1">Email Address</label>
+          <div class="relative"><i data-lucide="mail" class="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400"></i> <input type="email" required class="input-focus w-full pl-10 pr-4 py-3 border border-gray-200 rounded-xl focus:outline-none" placeholder="Enter your email">
+          </div>
+         </div>
+         <div><label class="block text-sm font-medium text-gray-700 mb-1">Phone Number</label>
+          <div class="relative"><i data-lucide="phone" class="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400"></i> <input type="tel" required class="input-focus w-full pl-10 pr-4 py-3 border border-gray-200 rounded-xl focus:outline-none" placeholder="+509 XXXX XXXX">
+          </div>
+         </div>
+         <div class="md:col-span-2"><label class="block text-sm font-medium text-gray-700 mb-1">Home Address</label>
+          <div class="relative"><i data-lucide="map-pin" class="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400"></i> <input type="text" required class="input-focus w-full pl-10 pr-4 py-3 border border-gray-200 rounded-xl focus:outline-none" placeholder="Enter your address">
+          </div>
+         </div>
+         <div><label class="block text-sm font-medium text-gray-700 mb-1">Password</label>
+          <div class="relative"><i data-lucide="lock" class="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400"></i> <input type="password" required minlength="8" class="input-focus w-full pl-10 pr-10 py-3 border border-gray-200 rounded-xl focus:outline-none" placeholder="Min. 8 characters" id="reg-password"> <button type="button" onclick="togglePassword('reg-password')" class="absolute right-3 top-1/2 -translate-y-1/2"> <i data-lucide="eye" class="w-5 h-5 text-gray-400"></i> </button>
+          </div>
+         </div>
+         <div><label class="block text-sm font-medium text-gray-700 mb-1">Confirm Password</label>
+          <div class="relative"><i data-lucide="lock" class="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400"></i> <input type="password" required minlength="8" class="input-focus w-full pl-10 pr-10 py-3 border border-gray-200 rounded-xl focus:outline-none" placeholder="Confirm password" id="reg-confirm-password"> <button type="button" onclick="togglePassword('reg-confirm-password')" class="absolute right-3 top-1/2 -translate-y-1/2"> <i data-lucide="eye" class="w-5 h-5 text-gray-400"></i> </button>
+          </div>
+         </div>
+         <div class="md:col-span-2"><label class="block text-sm font-medium text-gray-700 mb-3">Account Type</label>
+          <div class="grid grid-cols-3 gap-4"><label class="role-option cursor-pointer relative"> <input type="radio" name="role" value="patient" class="sr-only peer" checked onchange="updateAccountForm('patient')">
+            <div class="peer-checked:border-primary peer-checked:bg-primary/5 border-2 border-gray-200 rounded-xl p-4 text-center transition-all"><i data-lucide="user" class="w-6 h-6 mx-auto mb-2 text-gray-500 peer-checked:text-primary"></i> <span class="text-sm font-medium text-gray-700">Patient</span>
+            </div></label> <label class="role-option cursor-pointer relative"> <input type="radio" name="role" value="doctor" class="sr-only peer" onchange="updateAccountForm('doctor')">
+            <div class="peer-checked:border-secondary peer-checked:bg-secondary/5 border-2 border-gray-200 rounded-xl p-4 text-center transition-all"><i data-lucide="stethoscope" class="w-6 h-6 mx-auto mb-2 text-gray-500"></i> <span class="text-sm font-medium text-gray-700">Doctor</span>
+            </div></label> <label class="role-option cursor-pointer relative"> <input type="radio" name="role" value="hospital" class="sr-only peer" onchange="updateAccountForm('hospital')">
+            <div class="peer-checked:border-amber-500 peer-checked:bg-amber-50 border-2 border-gray-200 rounded-xl p-4 text-center transition-all"><i data-lucide="building-2" class="w-6 h-6 mx-auto mb-2 text-gray-500"></i> <span class="text-sm font-medium text-gray-700">Hospital</span>
+            </div></label>
+          </div>
+         </div>
+         <div class="md:col-span-2"><label class="flex items-start gap-3 cursor-pointer"> <input type="checkbox" required class="w-5 h-5 mt-0.5 text-primary rounded border-gray-300"> <span class="text-sm text-gray-600">I agree to the <a href="#" class="text-primary hover:underline">Terms of Service</a> and <a href="#" class="text-primary hover:underline">Privacy Policy</a></span> </label>
+         </div>
+         <div class="md:col-span-2"><button type="submit" class="btn-primary w-full text-white py-4 rounded-xl font-semibold text-lg flex items-center justify-center gap-2"> <i data-lucide="user-plus" class="w-5 h-5"></i> Create Account </button>
+         </div>
+        </div>
+       </form>
+       <div class="mt-6 text-center">
+        <p class="text-gray-600">Already have an account? <a onclick="showPage('login')" class="text-primary font-semibold cursor-pointer hover:underline">Sign in</a></p>
+       </div>
+      </div>
+     </div>
+    </section>
+   </div><!-- HOSPITAL REGISTRATION PAGE -->
+   <div id="page-hospital-register" class="page">
+    <section class="min-h-screen pt-20 pb-12 gradient-bg">
+     <div class="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <div class="text-center mb-8">
+       <h1 class="text-3xl md:text-4xl font-bold text-dark mb-4">Hospital Registration</h1>
+       <p class="text-gray-600">Register your healthcare facility</p>
+      </div>
+      <div class="bg-white rounded-2xl shadow-xl p-8">
+       <form id="hospital-register-form" onsubmit="handleHospitalRegister(event)">
+        <div class="grid md:grid-cols-2 gap-6">
+         <div class="md:col-span-2"><label class="block text-sm font-medium text-gray-700 mb-1">Hospital Name</label>
+          <div class="relative"><i data-lucide="building-2" class="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400"></i> <input type="text" required class="input-focus w-full pl-10 pr-4 py-3 border border-gray-200 rounded-xl focus:outline-none" placeholder="Hospital name">
+          </div>
+         </div>
+         <div><label class="block text-sm font-medium text-gray-700 mb-1">Registration #</label>
+          <div class="relative"><i data-lucide="hash" class="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400"></i> <input type="text" required class="input-focus w-full pl-10 pr-4 py-3 border border-gray-200 rounded-xl focus:outline-none" placeholder="Registration #">
+          </div>
+         </div>
+         <div><label class="block text-sm font-medium text-gray-700 mb-1">License #</label>
+          <div class="relative"><i data-lucide="file-text" class="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400"></i> <input type="text" required class="input-focus w-full pl-10 pr-4 py-3 border border-gray-200 rounded-xl focus:outline-none" placeholder="License">
+          </div>
+         </div>
+         <div class="md:col-span-2"><label class="block text-sm font-medium text-gray-700 mb-1">Address</label>
+          <div class="relative"><i data-lucide="map-pin" class="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400"></i> <input type="text" required class="input-focus w-full pl-10 pr-4 py-3 border border-gray-200 rounded-xl focus:outline-none" placeholder="Street address">
+          </div>
+         </div>
+         <div><label class="block text-sm font-medium text-gray-700 mb-1">City</label>
+          <div class="relative"><i data-lucide="map" class="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400"></i> <input type="text" required class="input-focus w-full pl-10 pr-4 py-3 border border-gray-200 rounded-xl focus:outline-none" placeholder="City">
+          </div>
+         </div>
+         <div><label class="block text-sm font-medium text-gray-700 mb-1">Type</label>
+          <div class="relative"><i data-lucide="layers" class="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400"></i> <select required class="input-focus w-full pl-10 pr-4 py-3 border border-gray-200 rounded-xl focus:outline-none appearance-none bg-white"><option value="">Select</option><option value="general">General</option><option value="private">Private Clinic</option><option value="specialized">Specialized</option></select>
+          </div>
+         </div>
+         <div><label class="block text-sm font-medium text-gray-700 mb-1">Main Phone</label>
+          <div class="relative"><i data-lucide="phone" class="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400"></i> <input type="tel" required class="input-focus w-full pl-10 pr-4 py-3 border border-gray-200 rounded-xl focus:outline-none" placeholder="+509 XXXX XXXX">
+          </div>
+         </div>
+         <div><label class="block text-sm font-medium text-gray-700 mb-1">Emergency</label>
+          <div class="relative"><i data-lucide="alert-circle" class="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400"></i> <input type="tel" required class="input-focus w-full pl-10 pr-4 py-3 border border-gray-200 rounded-xl focus:outline-none" placeholder="+509 XXXX XXXX">
+          </div>
+         </div>
+         <div class="md:col-span-2"><label class="block text-sm font-medium text-gray-700 mb-1">Email</label>
+          <div class="relative"><i data-lucide="mail" class="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400"></i> <input type="email" required class="input-focus w-full pl-10 pr-4 py-3 border border-gray-200 rounded-xl focus:outline-none" placeholder="hospital@example.com">
+          </div>
+         </div>
+         <div class="md:col-span-2"><label class="block text-sm font-medium text-gray-700 mb-1">Administrator</label>
+          <div class="relative"><i data-lucide="user" class="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400"></i> <input type="text" required class="input-focus w-full pl-10 pr-4 py-3 border border-gray-200 rounded-xl focus:outline-none" placeholder="Full name">
+          </div>
+         </div>
+         <div><label class="block text-sm font-medium text-gray-700 mb-1">Position</label>
+          <div class="relative"><i data-lucide="briefcase" class="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400"></i> <input type="text" required class="input-focus w-full pl-10 pr-4 py-3 border border-gray-200 rounded-xl focus:outline-none" placeholder="Director">
+          </div>
+         </div>
+         <div><label class="block text-sm font-medium text-gray-700 mb-1">Admin Email</label>
+          <div class="relative"><i data-lucide="mail" class="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400"></i> <input type="email" required class="input-focus w-full pl-10 pr-4 py-3 border border-gray-200 rounded-xl focus:outline-none" placeholder="admin@hospital.com">
+          </div>
+         </div>
+         <div><label class="block text-sm font-medium text-gray-700 mb-1">Password</label>
+          <div class="relative"><i data-lucide="lock" class="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400"></i> <input type="password" required minlength="8" class="input-focus w-full pl-10 pr-10 py-3 border border-gray-200 rounded-xl focus:outline-none" id="hosp-password"> <button type="button" onclick="togglePassword('hosp-password')" class="absolute right-3 top-1/2 -translate-y-1/2"><i data-lucide="eye" class="w-5 h-5 text-gray-400"></i></button>
+          </div>
+         </div>
+         <div><label class="block text-sm font-medium text-gray-700 mb-1">Confirm</label>
+          <div class="relative"><i data-lucide="lock" class="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400"></i> <input type="password" required minlength="8" class="input-focus w-full pl-10 pr-10 py-3 border border-gray-200 rounded-xl focus:outline-none" id="hosp-confirm-password"> <button type="button" onclick="togglePassword('hosp-confirm-password')" class="absolute right-3 top-1/2 -translate-y-1/2"><i data-lucide="eye" class="w-5 h-5 text-gray-400"></i></button>
+          </div>
+         </div>
+         <div class="md:col-span-2"><label class="flex items-start gap-3"><input type="checkbox" required class="w-5 h-5 mt-0.5 text-primary rounded border-gray-300"><span class="text-sm text-gray-600">I agree to <a href="#" class="text-primary hover:underline">Terms</a> and <a href="#" class="text-primary hover:underline">Agreement</a></span></label>
+         </div>
+         <div class="md:col-span-2"><button type="submit" class="btn-primary w-full text-white py-4 rounded-xl font-semibold text-lg flex items-center justify-center gap-2"><i data-lucide="check-circle" class="w-5 h-5"></i> Complete Registration</button>
+         </div>
+        </div>
+       </form>
+       <div class="mt-6 text-center">
+        <p class="text-gray-600"><a onclick="showPage('login')" class="text-primary font-semibold cursor-pointer">Sign in</a> or <a onclick="showPage('register')" class="text-secondary font-semibold cursor-pointer">register as patient</a></p>
+       </div>
+      </div>
+     </div>
+    </section>
+   </div><!-- CONTACT PAGE -->
+   <div id="page-contact" class="page">
+    <section class="pt-24 md:pt-32 pb-16 gradient-bg">
+     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center mb-12"><span class="inline-block bg-primary/10 text-primary px-4 py-1.5 rounded-full text-sm font-semibold mb-4">Contact Us</span>
+       <h1 class="text-3xl md:text-5xl font-bold text-dark mb-4">Get in Touch</h1>
+       <p class="text-gray-600 max-w-2xl mx-auto text-lg">Have questions? We'd love to hear from you.</p>
+      </div>
+     </div>
+    </section>
+    <section class="py-16 bg-white">
+     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid lg:grid-cols-2 gap-12"><!-- Contact Form -->
+       <div class="bg-white rounded-2xl shadow-xl p-8 border border-gray-100">
+        <h2 class="text-2xl font-bold text-dark mb-6">Send us a Message</h2>
+        <form id="contact-form" onsubmit="handleContact(event)">
+         <div class="space-y-5">
+          <div><label class="block text-sm font-medium text-gray-700 mb-1" for="contact-name">Your Name</label>
+           <div class="relative"><i data-lucide="user" class="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400"></i> <input type="text" id="contact-name" required class="input-focus w-full pl-10 pr-4 py-3 border border-gray-200 rounded-xl focus:outline-none" placeholder="Enter your name">
+           </div>
+          </div>
+          <div><label class="block text-sm font-medium text-gray-700 mb-1" for="contact-email">Email Address</label>
+           <div class="relative"><i data-lucide="mail" class="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400"></i> <input type="email" id="contact-email" required class="input-focus w-full pl-10 pr-4 py-3 border border-gray-200 rounded-xl focus:outline-none" placeholder="Enter your email">
+           </div>
+          </div>
+          <div><label class="block text-sm font-medium text-gray-700 mb-1" for="contact-message">Message</label> <textarea id="contact-message" required rows="5" class="input-focus w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none resize-none" placeholder="How can we help you?"></textarea>
+          </div><button type="submit" class="btn-primary w-full text-white py-4 rounded-xl font-semibold flex items-center justify-center gap-2"> <i data-lucide="send" class="w-5 h-5"></i> Send Message </button>
+         </div>
+        </form>
+       </div><!-- Contact Info -->
+       <div class="space-y-8">
+        <div>
+         <h2 class="text-2xl font-bold text-dark mb-6">Contact Information</h2>
+         <div class="space-y-6">
+          <div class="flex items-start gap-4">
+           <div class="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center flex-shrink-0"><i data-lucide="phone" class="w-6 h-6 text-primary"></i>
+           </div>
+           <div>
+            <h3 class="font-semibold text-dark">Phone</h3>
+            <p id="contact-phone" class="text-gray-600">+509 4076139643</p>
+           </div>
+          </div>
+          <div class="flex items-start gap-4">
+           <div class="w-12 h-12 bg-secondary/10 rounded-xl flex items-center justify-center flex-shrink-0"><i data-lucide="mail" class="w-6 h-6 text-secondary"></i>
+           </div>
+           <div>
+            <h3 class="font-semibold text-dark">Email</h3>
+            <p id="contact-email-display" class="text-gray-600">santeplusayiti@gmail.com</p>
+           </div>
+          </div>
+          <div class="flex items-start gap-4">
+           <div class="w-12 h-12 bg-amber-100 rounded-xl flex items-center justify-center flex-shrink-0"><i data-lucide="map-pin" class="w-6 h-6 text-amber-600"></i>
+           </div>
+           <div>
+            <h3 class="font-semibold text-dark">Location</h3>
+            <p class="text-gray-600">Tabarre 27 Ruelle Theodat<br>
+              Port-au-Prince, Haiti</p>
+           </div>
+          </div>
+         </div>
+        </div>
+        <div class="bg-green-50 rounded-2xl p-6 border border-green-100">
+         <div class="flex items-center gap-4">
+          <div class="w-14 h-14 bg-green-500 rounded-xl flex items-center justify-center flex-shrink-0">
+           <svg class="w-7 h-7 text-white" viewbox="0 0 24 24" fill="currentColor">
+            <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
+           </svg>
+          </div>
+          <div class="flex-1">
+           <h3 class="font-bold text-dark">Chat with us on WhatsApp</h3>
+           <p class="text-sm text-gray-600">Get instant support and answers</p>
+          </div><button onclick="openWhatsApp()" class="bg-green-500 hover:bg-green-600 text-white px-6 py-3 rounded-xl font-semibold transition-all flex items-center gap-2"> <span class="hidden sm:inline">Chat</span> <i data-lucide="arrow-right" class="w-5 h-5"></i> </button>
+         </div>
+        </div>
+       </div>
+      </div>
+     </div>
+    </section>
+   </div><!-- Footer -->
+   <footer class="bg-dark text-white py-12">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+     <div class="grid md:grid-cols-4 gap-8 mb-8">
+      <div>
+       <div class="flex items-center gap-2 mb-4">
+        <div class="w-10 h-10 bg-gradient-to-br from-primary to-secondary rounded-xl flex items-center justify-center"><i data-lucide="heart-pulse" class="w-6 h-6 text-white"></i>
+        </div><span class="text-xl font-bold">SantéPlus</span>
+       </div>
+       <p class="text-gray-400 text-sm">Providing affordable health insurance to all Haitians.</p>
+      </div>
+      <div>
+       <h3 class="font-semibold mb-4">Quick Links</h3>
+       <ul class="space-y-2">
+        <li><a onclick="showPage('home')" class="text-gray-400 hover:text-white cursor-pointer transition-colors text-sm">Home</a></li>
+        <li><a onclick="showPage('plans')" class="text-gray-400 hover:text-white cursor-pointer transition-colors text-sm">Plans</a></li>
+        <li><a onclick="showPage('login')" class="text-gray-400 hover:text-white cursor-pointer transition-colors text-sm">Login</a></li>
+        <li><a onclick="showPage('register')" class="text-gray-400 hover:text-white cursor-pointer transition-colors text-sm">Register</a></li>
+       </ul>
+      </div>
+      <div>
+       <h3 class="font-semibold mb-4">Support</h3>
+       <ul class="space-y-2">
+        <li><a onclick="showPage('contact')" class="text-gray-400 hover:text-white cursor-pointer transition-colors text-sm">Contact Us</a></li>
+        <li><a href="#" class="text-gray-400 hover:text-white cursor-pointer transition-colors text-sm">FAQ</a></li>
+        <li><a href="#" class="text-gray-400 hover:text-white cursor-pointer transition-colors text-sm">Find Hospital</a></li>
+        <li><a href="#" class="text-gray-400 hover:text-white cursor-pointer transition-colors text-sm">Claims</a></li>
+       </ul>
+      </div>
+      <div>
+       <h3 class="font-semibold mb-4">Connect</h3>
+       <div class="flex gap-3"><a onclick="openWhatsApp()" class="w-10 h-10 bg-green-500 rounded-lg flex items-center justify-center hover:bg-green-600 transition-colors cursor-pointer">
+         <svg class="w-5 h-5 text-white" fill="currentColor" viewbox="0 0 24 24">
+          <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
+         </svg></a>
+       </div>
+      </div>
+     </div>
+     <div class="border-t border-white/10 pt-8 text-center">
+      <p class="text-gray-400 text-sm">© 2025 SantéPlus Ayiti. All rights reserved. | <a href="https://santeplusayiti.org" class="hover:text-white">santeplusayiti.org</a></p>
+     </div>
+    </div>
+   </footer><!-- WhatsApp Button --> <a id="whatsapp-btn" onclick="openWhatsApp()" class="whatsapp-btn w-14 h-14 bg-green-500 rounded-full flex items-center justify-center shadow-lg cursor-pointer hover:bg-green-600 transition-all">
+    <svg class="w-7 h-7 text-white" viewbox="0 0 24 24" fill="currentColor">
+     <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
+    </svg></a> <!-- Toast Notification -->
+   <div id="toast" class="fixed bottom-24 right-6 bg-dark text-white px-6 py-4 rounded-xl shadow-2xl transform translate-x-full transition-transform duration-300 z-50 max-w-sm">
+    <div class="flex items-center gap-3"><i data-lucide="check-circle" class="w-6 h-6 text-secondary" id="toast-icon"></i>
+     <div>
+      <p class="font-semibold" id="toast-title">Success!</p>
+      <p class="text-sm text-gray-300" id="toast-message">Your action was completed.</p>
+     </div>
+    </div>
+   </div><!-- Forgot Password Modal -->
+   <div id="forgot-modal" class="fixed inset-0 bg-black/50 z-50 hidden items-center justify-center p-4">
+    <div class="bg-white rounded-2xl max-w-md w-full p-8">
+     <div class="text-center mb-6">
+      <div class="w-14 h-14 bg-primary/10 rounded-xl flex items-center justify-center mx-auto mb-4"><i data-lucide="key" class="w-7 h-7 text-primary"></i>
+      </div>
+      <h2 class="text-xl font-bold text-dark">Reset Password</h2>
+      <p class="text-gray-500 text-sm mt-2">Enter your email and we'll send you a reset link</p>
+     </div>
+     <form onsubmit="handleForgotPassword(event)">
+      <div class="mb-4"><label class="block text-sm font-medium text-gray-700 mb-1" for="forgot-email">Email Address</label> <input type="email" id="forgot-email" required class="input-focus w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none" placeholder="Enter your email">
+      </div><button type="submit" class="btn-primary w-full text-white py-3 rounded-xl font-semibold mb-4"> Send Reset Link </button> <button type="button" onclick="closeForgotModal()" class="w-full py-3 text-gray-500 font-medium hover:text-gray-700"> Cancel </button>
+     </form>
+    </div>
+   </div>
+  </div>
+  <script>
+    // Default configuration
+    const defaultConfig = {
+      hero_title: 'Affordable Health Insurance for Everyone in Haiti',
+      hero_subtitle: 'Protect your family with comprehensive health coverage. Access quality healthcare at partner hospitals across Haiti with plans starting at just 500 HTG/month.',
+      company_phone: '+509 46 40 0457',
+      company_email: 'santeplusayiti@gmail.com',
+      whatsapp_number: '4076139643',
+      basic_price: '500',
+      premium_price: '1500',
+      elite_price: '3000',
+      stripe_backend_url: ''
+    };
+
+    // Payment state
+    let currentPlan = 'premium';
+    let planPrices = {
+      basic: parseInt(defaultConfig.basic_price),
+      premium: parseInt(defaultConfig.premium_price),
+      elite: parseInt(defaultConfig.elite_price)
+    };
+    let planNames = {
+      basic: 'Basic Plan',
+      premium: 'Premium Plan',
+      elite: 'Elite Plan'
+    };
+
+    let config = { ...defaultConfig };
+
+    // Initialize Element SDK
+    if (window.elementSdk) {
+      window.elementSdk.init({
+        defaultConfig,
+        onConfigChange: async (newConfig) => {
+          config = { ...defaultConfig, ...newConfig };
+          updateUI();
+        },
+        mapToCapabilities: (cfg) => ({
+          recolorables: [],
+          borderables: [],
+          fontEditable: undefined,
+          fontSizeable: undefined
+        }),
+        mapToEditPanelValues: (cfg) => new Map([
+          ['hero_title', cfg.hero_title || defaultConfig.hero_title],
+          ['hero_subtitle', cfg.hero_subtitle || defaultConfig.hero_subtitle],
+          ['company_phone', cfg.company_phone || defaultConfig.company_phone],
+          ['company_email', cfg.company_email || defaultConfig.company_email],
+          ['whatsapp_number', cfg.whatsapp_number || defaultConfig.whatsapp_number],
+          ['basic_price', cfg.basic_price || defaultConfig.basic_price],
+          ['premium_price', cfg.premium_price || defaultConfig.premium_price],
+          ['elite_price', cfg.elite_price || defaultConfig.elite_price],
+          ['stripe_publishable_key', cfg.stripe_publishable_key || defaultConfig.stripe_publishable_key],
+          ['stripe_backend_url', cfg.stripe_backend_url || defaultConfig.stripe_backend_url]
+        ])
+      });
+    }
+
+    function updateUI() {
+      const heroTitle = document.getElementById('hero-title');
+      const heroSubtitle = document.getElementById('hero-subtitle');
+      const contactPhone = document.getElementById('contact-phone');
+      const contactEmailDisplay = document.getElementById('contact-email-display');
+      
+      if (heroTitle) heroTitle.textContent = config.hero_title || defaultConfig.hero_title;
+      if (heroSubtitle) heroSubtitle.textContent = config.hero_subtitle || defaultConfig.hero_subtitle;
+      if (contactPhone) contactPhone.textContent = config.company_phone || defaultConfig.company_phone;
+      if (contactEmailDisplay) contactEmailDisplay.textContent = config.company_email || defaultConfig.company_email;
+    }
+
+    // Page Navigation
+    let currentPage = 'home';
+    let selectedLoginType = 'patient';
+
+    function showPage(pageName) {
+      document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+      document.getElementById(`page-${pageName}`).classList.add('active');
+      
+      document.querySelectorAll('.nav-link').forEach(link => link.classList.remove('active'));
+      const navLink = document.getElementById(`nav-${pageName}`);
+      if (navLink) navLink.classList.add('active');
+      
+      currentPage = pageName;
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      lucide.createIcons();
+    }
+
+    // Mobile Menu
+    function toggleMobileMenu() {
+      const menu = document.getElementById('mobile-menu');
+      const overlay = document.getElementById('menu-overlay');
+      menu.classList.toggle('open');
+      overlay.classList.toggle('hidden');
+    }
+
+    // Login Type Selection
+    function selectLoginType(type) {
+      selectedLoginType = type;
+      document.querySelectorAll('.login-card').forEach(card => {
+        card.classList.remove('border-primary', 'border-secondary', 'border-amber-500');
+      });
+      
+      const selectedCard = document.getElementById(`login-${type}`);
+      const titleEl = document.getElementById('login-type-title');
+      const iconContainer = document.getElementById('login-type-icon');
+      
+      let borderColor, bgColor, icon, title;
+      
+      switch(type) {
+        case 'patient':
+          borderColor = 'border-primary';
+          bgColor = 'bg-primary/10';
+          icon = 'user';
+          title = 'Patient Login';
+          break;
+        case 'doctor':
+          borderColor = 'border-secondary';
+          bgColor = 'bg-secondary/10';
+          icon = 'stethoscope';
+          title = 'Doctor Login';
+          break;
+        case 'hospital':
+          borderColor = 'border-amber-500';
+          bgColor = 'bg-amber-100';
+          icon = 'building-2';
+          title = 'Hospital Login';
+          break;
+      }
+      
+      selectedCard.classList.add(borderColor);
+      titleEl.textContent = title;
+      iconContainer.className = `w-14 h-14 ${bgColor} rounded-xl flex items-center justify-center mx-auto mb-3`;
+      iconContainer.innerHTML = `<i data-lucide="${icon}" class="w-7 h-7 ${type === 'hospital' ? 'text-amber-600' : type === 'doctor' ? 'text-secondary' : 'text-primary'}"></i>`;
+      lucide.createIcons();
+    }
+
+    // Update account form based on selected role
+    function updateAccountForm(role) {
+      if (role === 'hospital') {
+        showPage('hospital-register');
+      }
+    }
+
+    // Form Handlers
+    function handleLogin(e) {
+      e.preventDefault();
+      showToast('Welcome Back!', 'You have been logged in successfully.');
+      showPage('home');
+    }
+
+    function handleRegister(e) {
+      e.preventDefault();
+      const password = document.getElementById('reg-password').value;
+      const confirmPassword = document.getElementById('reg-confirm-password').value;
+      
+      if (password !== confirmPassword) {
+        showToast('Error', 'Passwords do not match.', 'error');
+        return;
+      }
+      
+      showToast('Account Created!', 'Welcome to SantéPlus Ayiti. Please login.');
+      showPage('login');
+    }
+
+    function handleHospitalRegister(e) {
+      e.preventDefault();
+      const password = document.getElementById('hosp-password').value;
+      const confirmPassword = document.getElementById('hosp-confirm-password').value;
+      
+      if (password !== confirmPassword) {
+        showToast('Error', 'Passwords do not match.', 'error');
+        return;
+      }
+      
+      showToast('Registration Complete!', 'We will contact you shortly.');
+      showPage('login');
+    }
+
+    function handleContact(e) {
+      e.preventDefault();
+      showToast('Message Sent!', 'We will get back to you soon.');
+      e.target.reset();
+    }
+
+    function selectPlan(plan) {
+      currentPlan = plan;
+      planPrices.basic = parseInt(config.basic_price || defaultConfig.basic_price);
+      planPrices.premium = parseInt(config.premium_price || defaultConfig.premium_price);
+      planPrices.elite = parseInt(config.elite_price || defaultConfig.elite_price);
+      
+      updatePaymentSummary(plan);
+      showPage('payment');
+    }
+
+    // Payment Functions
+    function selectPaymentMethod(method) {
+      document.querySelectorAll('.payment-method-btn').forEach(btn => {
+        btn.classList.remove('active', 'border-primary', 'bg-primary/5');
+        btn.classList.add('border-gray-200');
+      });
+      
+      document.querySelectorAll('.payment-section').forEach(section => {
+        section.classList.add('hidden');
+      });
+      
+      const selectedBtn = document.querySelector(`[data-method="${method}"]`);
+      selectedBtn.classList.add('active', 'border-primary', 'bg-primary/5');
+      selectedBtn.classList.remove('border-gray-200');
+      
+      const sectionId = `${method}-section`;
+      const section = document.getElementById(sectionId);
+      if (section) section.classList.remove('hidden');
+    }
+
+    function updatePaymentSummary(plan) {
+      const price = planPrices[plan];
+      const tax = Math.floor(price * 0.10);
+      const fee = 50;
+      const total = price + tax + fee;
+      
+      document.getElementById('summary-plan-name').textContent = planNames[plan];
+      document.getElementById('summary-plan-price').textContent = price.toLocaleString() + ' HTG';
+      document.getElementById('subtotal').textContent = price.toLocaleString() + ' HTG';
+      document.getElementById('tax').textContent = tax + ' HTG';
+      document.getElementById('fee').textContent = fee + ' HTG';
+      document.getElementById('total-amount').textContent = total.toLocaleString() + ' HTG';
+    }
+
+    function processPayment(e) {
+      e.preventDefault();
+      const method = document.querySelector('.payment-method-btn.active');
+      const methodName = method.getAttribute('data-method');
+      
+      // Only Stripe card payments are functional
+      if (methodName === 'card') {
+        processStripePayment();
+      } else {
+        showToast('Backend Required', `${methodName.toUpperCase()} requires backend integration. Contact support.`, 'error');
+      }
+    }
+
+    // Stripe Integration
+    let stripe = null;
+    let cardElement = null;
+
+    async function initializeStripe() {
+      const publishableKey = config.stripe_publishable_key || '';
+      
+      if (!publishableKey) {
+        console.warn('Stripe publishable key not configured');
+        return;
+      }
+
+      stripe = window.Stripe(publishableKey);
+      const elements = stripe.elements();
+      cardElement = elements.create('card', {
+        style: {
+          base: {
+            fontSize: '16px',
+            color: '#424770',
+            '::placeholder': { color: '#aab7c4' }
+          },
+          invalid: { color: '#fa755a' }
+        }
+      });
+
+      const cardElementContainer = document.getElementById('stripe-card-element');
+      if (cardElementContainer && !cardElementContainer.hasChildNodes()) {
+        cardElement.mount('#stripe-card-element');
+        
+        // Display card errors
+        cardElement.on('change', function(event) {
+          const displayError = document.getElementById('stripe-card-errors');
+          if (event.error) {
+            displayError.textContent = event.error.message;
+            displayError.classList.remove('hidden');
+          } else {
+            displayError.classList.add('hidden');
+          }
+        });
+      }
+    }
+
+    async function processStripePayment() {
+      if (!stripe || !cardElement) {
+        showToast('Error', 'Stripe not initialized. Please refresh and try again.', 'error');
+        return;
+      }
+
+      const cardholder = document.getElementById('cardholder-name').value.trim();
+      if (!cardholder) {
+        showToast('Error', 'Please enter cardholder name.', 'error');
+        return;
+      }
+
+      const backendUrl = config.stripe_backend_url || '';
+      if (!backendUrl) {
+        showToast('Backend Error', 'Stripe backend URL not configured. Please check your settings.', 'error');
+        return;
+      }
+
+      const payButton = document.querySelector('button[type="submit"]');
+      const originalButtonText = payButton.innerHTML;
+      payButton.disabled = true;
+      payButton.innerHTML = '<i data-lucide="loader" class="w-5 h-5 animate-spin"></i> Processing...';
+      lucide.createIcons();
+
+      try {
+        // Calculate total amount
+        const price = planPrices[currentPlan];
+        const tax = Math.floor(price * 0.10);
+        const fee = 50;
+        const total = price + tax + fee;
+
+        // Step 1: Create payment method from card
+        showToast('Processing', 'Creating secure payment session...');
+        const { paymentMethod, error } = await stripe.createPaymentMethod({
+          type: 'card',
+          card: cardElement,
+          billing_details: { name: cardholder }
+        });
+
+        if (error) {
+          showToast('Card Error', error.message, 'error');
+          payButton.disabled = false;
+          payButton.innerHTML = originalButtonText;
+          lucide.createIcons();
+          return;
+        }
+
+        // Step 2: Send to backend to create PaymentIntent
+        const backendResponse = await fetch(`${backendUrl}/api/payment/create-intent`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            plan: currentPlan,
+            amount: total * 100, // Stripe expects cents
+            currency: 'HTG',
+            paymentMethodId: paymentMethod.id,
+            cardholder: cardholder,
+            saveCard: document.getElementById('save-card-checkbox').checked
+          })
+        });
+
+        const backendData = await backendResponse.json();
+
+        if (!backendResponse.ok) {
+          throw new Error(backendData.message || 'Payment processing failed');
+        }
+
+        // Step 3: Handle response based on payment status
+        if (backendData.status === 'succeeded') {
+          // ✅ Payment succeeded immediately (no verification required)
+          generateInvoice();
+          showToast('Payment Successful! 🎉', `Welcome to ${planNames[currentPlan]}! Check your email for confirmation.`);
+          
+          setTimeout(() => {
+            payButton.disabled = false;
+            payButton.innerHTML = originalButtonText;
+            lucide.createIcons();
+            showPage('home');
+          }, 2500);
+
+        } else if (backendData.status === 'requires_action' && backendData.clientSecret) {
+          // ⚠️ Payment requires 3D Secure verification
+          showToast('Verify Your Card', 'Please complete the verification in the popup');
+          
+          const { error: confirmError, paymentIntent } = await stripe.confirmCardPayment(
+            backendData.clientSecret
+          );
+          
+          if (confirmError) {
+            showToast('Verification Failed', confirmError.message, 'error');
+            payButton.disabled = false;
+            payButton.innerHTML = originalButtonText;
+            lucide.createIcons();
+            return;
+          }
+
+          // Confirm payment with backend after 3D Secure
+          if (paymentIntent && paymentIntent.status === 'succeeded') {
+            generateInvoice();
+            showToast('Payment Successful! 🎉', `Welcome to ${planNames[currentPlan]}! Check your email.`);
+            
+            setTimeout(() => {
+              payButton.disabled = false;
+              payButton.innerHTML = originalButtonText;
+              lucide.createIcons();
+              showPage('home');
+            }, 2500);
+          } else if (paymentIntent && paymentIntent.status === 'processing') {
+            showToast('Payment Processing', 'Your payment is being processed. You will receive an email shortly.');
+            
+            setTimeout(() => {
+              payButton.disabled = false;
+              payButton.innerHTML = originalButtonText;
+              lucide.createIcons();
+              showPage('home');
+            }, 2500);
+          } else {
+            throw new Error(`Unexpected payment status: ${paymentIntent?.status}`);
+          }
+
+        } else if (backendData.status === 'processing') {
+          // Payment is processing
+          showToast('Payment Processing', 'Your payment is being processed. You will receive an email shortly.');
+          
+          setTimeout(() => {
+            payButton.disabled = false;
+            payButton.innerHTML = originalButtonText;
+            lucide.createIcons();
+            showPage('home');
+          }, 2500);
+
+        } else {
+          throw new Error(backendData.message || 'Unexpected payment response from server');
+        }
+
+      } catch (error) {
+        console.error('Payment error:', error);
+        showToast('Payment Error', error.message || 'An error occurred. Please try again.', 'error');
+        payButton.disabled = false;
+        payButton.innerHTML = originalButtonText;
+        lucide.createIcons();
+      }
+    }
+
+    function generateInvoice() {
+      const price = planPrices[currentPlan];
+      const tax = Math.floor(price * 0.10);
+      const fee = 50;
+      const total = price + tax + fee;
+      const date = new Date().toLocaleDateString();
+      
+      const invoiceContent = `
+SANTEPLUS AYITI - INVOICE
+Generated: ${date}
+Invoice #: INV-${Date.now()}
+
+PLAN DETAILS:
+Plan: ${planNames[currentPlan]}
+Duration: 1 Month
+Status: PAID
+
+PRICING BREAKDOWN:
+Subtotal: ${price} HTG
+Tax (10%): ${tax} HTG
+Processing Fee: 50 HTG
+---
+TOTAL: ${total} HTG
+
+COVERAGE INCLUDES:
+✓ General consultations
+✓ Emergency care
+✓ Access to 50+ partner hospitals
+✓ 24/7 customer support
+
+Thank you for choosing SantéPlus Ayiti!
+      `;
+      
+      localStorage.setItem('lastInvoice', invoiceContent);
+    }
+
+    function downloadInvoice() {
+      const invoice = localStorage.getItem('lastInvoice') || 'No invoice available';
+      const element = document.createElement('a');
+      element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(invoice));
+      element.setAttribute('download', 'santeplus-invoice.txt');
+      element.style.display = 'none';
+      document.body.appendChild(element);
+      element.click();
+      document.body.removeChild(element);
+      showToast('Downloaded', 'Invoice downloaded successfully');
+    }
+
+    // Password Toggle
+    function togglePassword(inputId) {
+      const input = document.getElementById(inputId);
+      input.type = input.type === 'password' ? 'text' : 'password';
+    }
+
+    // Forgot Password
+    function showForgotPassword(e) {
+      e.preventDefault();
+      document.getElementById('forgot-modal').classList.remove('hidden');
+      document.getElementById('forgot-modal').classList.add('flex');
+    }
+
+    function closeForgotModal() {
+      document.getElementById('forgot-modal').classList.add('hidden');
+      document.getElementById('forgot-modal').classList.remove('flex');
+    }
+
+    function handleForgotPassword(e) {
+      e.preventDefault();
+      closeForgotModal();
+      showToast('Email Sent!', 'Check your inbox for the reset link.');
+    }
+
+    // WhatsApp
+    function openWhatsApp() {
+      const phone = config.whatsapp_number || defaultConfig.whatsapp_number;
+      const message = encodeURIComponent('Hello, I would like more information about SantePlus Ayiti insurance plans.');
+      window.open(`https://wa.me/${phone}?text=${message}`, '_blank');
+    }
+
+    // Toast Notification
+    function showToast(title, message, type = 'success') {
+      const toast = document.getElementById('toast');
+      const toastTitle = document.getElementById('toast-title');
+      const toastMessage = document.getElementById('toast-message');
+      const toastIcon = document.getElementById('toast-icon');
+      
+      toastTitle.textContent = title;
+      toastMessage.textContent = message;
+      
+      if (type === 'error') {
+        toastIcon.setAttribute('data-lucide', 'alert-circle');
+        toastIcon.className = 'w-6 h-6 text-red-500';
+      } else {
+        toastIcon.setAttribute('data-lucide', 'check-circle');
+        toastIcon.className = 'w-6 h-6 text-secondary';
+      }
+      
+      lucide.createIcons();
+      
+      toast.classList.remove('translate-x-full');
+      setTimeout(() => {
+        toast.classList.add('translate-x-full');
+      }, 4000);
+    }
+
+    // Initialize on page load
+    document.addEventListener('DOMContentLoaded', function() {
+      lucide.createIcons();
+      updateUI();
+      initializeStripe();
+      showPage('home');
+    });
+
+    // Fallback initialization
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', function() {
+        lucide.createIcons();
+        updateUI();
+      });
+    } else {
+      lucide.createIcons();
+      updateUI();
+    }
+  </script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9e23e1b681112890',t:'MTc3NDUwNDI2Ny4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script>
+  <!-- Mobile bottom CTA bar -->
+  <div id="mobile-cta-bar" class="fixed bottom-0 inset-x-0 bg-white border-t border-gray-200 shadow-lg z-50 sm:hidden">
+    <div class="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
+      <button onclick="showPage('register')" class="flex-1 mr-2 bg-primary text-white text-sm font-semibold py-2 rounded-lg">Get Insured</button>
+      <button onclick="openWhatsApp()" class="flex-1 mr-2 bg-green-500 text-white text-sm font-semibold py-2 rounded-lg">WhatsApp</button>
+      <button onclick="callPhone()" class="flex-1 bg-blue-600 text-white text-sm font-semibold py-2 rounded-lg">Call</button>
+    </div>
+  </div>
+
+<script>
+  function callPhone() {
+    window.location.href = 'tel:+50912345678';
+  }
+</script>
+</body>
+</html>
