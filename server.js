@@ -293,6 +293,24 @@ app.get("/api/health", (req, res) => {
   res.json({ status: "ok", timestamp: new Date().toISOString() });
 });
 
+// Global Express error-handling middleware — must have four parameters
+// eslint-disable-next-line no-unused-vars
+app.use((err, req, res, next) => {
+  console.error("Unhandled Express error:", err);
+  res.status(500).json({ error: "Internal server error" });
+});
+
+// Log unhandled promise rejections without masking them
+process.on("unhandledRejection", (reason) => {
+  console.error("Unhandled promise rejection:", reason);
+});
+
+// Exit on uncaught exceptions so the process manager can restart cleanly
+process.on("uncaughtException", (err) => {
+  console.error("Uncaught exception:", err);
+  process.exit(1);
+});
+
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`🚀 Server ap mache sou port ${PORT}`);

@@ -1,4 +1,6 @@
-const API_BASE = "http://localhost:3000/api";
+const API_BASE = (typeof window !== "undefined" && window.location.hostname !== "localhost")
+  ? "/api"
+  : "http://localhost:3000/api";
 
 // Get form input values
 function getFormData() {
